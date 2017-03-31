@@ -19,9 +19,21 @@ def GameServer(Server):
     #Set the channel to deal with incoming requests
     channelClass = ClientChannel
 
+    #Constructor to initialize the server objects
+    def __init__(self, *args, **kwargs):
+
+        #Call the super constructor
+        Server.__init__(self, *args, **kwargs)
+
+        #Create the objects to hold our game ID and list of running games
+        self.games = []
+        self.queue = None
+        self.gameIndex = 0
+
     #Function to deal with new connections
     def Connected(self, channel, addr):
         print("New connection: {}".format(channel))
+            
 
 #Start the server, but only if the file wasn't imported
 if __name__ == "__main__":
