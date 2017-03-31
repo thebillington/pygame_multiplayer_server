@@ -44,7 +44,7 @@ class GameServer(Server):
             #Add a new game to the queue
             self.gameIndex += 1
             channel.gameID = self.gameIndex
-            self.queue = Game(Channel, self.currentIndex)
+            self.queue = Game(Channel, self.gameIndex)
 
         else:
 
