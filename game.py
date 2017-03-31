@@ -62,8 +62,8 @@ class OnlineGame(ConnectionListener):
         pygame.display.flip()
 
     #Create a function to receive the start game signal
-    def Network_startgame():
-        print("Starting game...")
+    def Network_startgame(self, data):
+        print(data)
 
 #If the file was run and not imported
 if __name__ == "__main__":
