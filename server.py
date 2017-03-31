@@ -14,7 +14,7 @@ class ClientChannel(Channel):
         print(data)
 
 #Create a new server for our game
-def GameServer(Server):
+class GameServer(Server):
 
     #Set the channel to deal with incoming requests
     channelClass = ClientChannel
@@ -33,6 +33,36 @@ def GameServer(Server):
     #Function to deal with new connections
     def Connected(self, channel, addr):
         print("New connection: {}".format(channel))
+
+        #When we receive a new connection
+        #Check whether there is a game waiting in the queue
+        if self.queue == None:
+
+            #If there isn't someone queueing
+            #Increment the game index
+            #Set the game ID for the player channel
+            #Add a new game to the queue
+            self.gameIndex += 1
+            channel.gameID = self.gameIndex
+            self.queue = Game(Channel, self.currentIndex)
+
+        else:
+
+            #Set the game index for the currently connected channel
+            channel.gameID = self.currentIndex
+
+            #Set the second player channel
+            self.queue.player1 = channel
+
+            #Send a message to the clients that the game is starting
+            selef.queue.player0.Send({"action":"startgame"})
+            selef.queue.player1.Send({"action":"startgame"})
+
+            #Add the game to the end of the game list
+            self.games.append(slef.queue)
+
+            #Empty the queue ready for the next connection
+            self.queue = None
 
 #Create the game class to hold information about any particular game
 class Game(object):
