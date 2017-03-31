@@ -49,17 +49,17 @@ class GameServer(Server):
         else:
 
             #Set the game index for the currently connected channel
-            channel.gameID = self.currentIndex
+            channel.gameID = self.gameIndex
 
             #Set the second player channel
             self.queue.player1 = channel
 
             #Send a message to the clients that the game is starting
-            selef.queue.player0.Send({"action":"startgame"})
-            selef.queue.player1.Send({"action":"startgame"})
+            self.queue.player0.Send({"action":"startgame"})
+            self.queue.player1.Send({"action":"startgame"})
 
             #Add the game to the end of the game list
-            self.games.append(slef.queue)
+            self.games.append(self.queue)
 
             #Empty the queue ready for the next connection
             self.queue = None
