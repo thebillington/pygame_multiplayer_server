@@ -61,6 +61,10 @@ class OnlineGame(ConnectionListener):
         #Update the display
         pygame.display.flip()
 
+    #Create a function to receive the start game signal
+    def Network_startgame():
+        print("Starting game...")
+
 #If the file was run and not imported
 if __name__ == "__main__":
 
@@ -70,4 +74,3 @@ if __name__ == "__main__":
     #Every tick update the game
     while True:
         og.update()
-        
