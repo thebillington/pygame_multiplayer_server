@@ -33,7 +33,25 @@ def GameServer(Server):
     #Function to deal with new connections
     def Connected(self, channel, addr):
         print("New connection: {}".format(channel))
-            
+
+#Create the game class to hold information about any particular game
+class Game(object):
+
+    #Constructor
+    def __init__(self, player0, gameIndex):
+
+        #Set the initial positions of each player
+        self.p1x = 0
+        self.p1y = 0
+        self.p2x = 550
+        self.p2y = 0
+
+        #Store the network channel of each client
+        self.player0 = player0
+        self.player1 = None
+
+        #Set the game id
+        self.gameID = gameIndex
 
 #Start the server, but only if the file wasn't imported
 if __name__ == "__main__":
