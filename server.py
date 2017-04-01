@@ -55,8 +55,8 @@ class GameServer(Server):
             self.queue.player1 = channel
 
             #Send a message to the clients that the game is starting
-            self.queue.player0.Send({"action":"startgame"})
-            self.queue.player1.Send({"action":"startgame"})
+            self.queue.player0.Send({"action":"startgame","player":0,"gameID":self.queue.gameID})
+            self.queue.player1.Send({"action":"startgame","player":1,"gameID":self.queue.gameID})
 
             #Add the game to the end of the game list
             self.games.append(self.queue)
@@ -68,7 +68,7 @@ class GameServer(Server):
 class Game(object):
 
     #Constructor
-    def __init__(self, player0, gameIndex):
+    def __init__(self, player, gameIndex):
 
         #Set the initial positions of each player
         self.p1x = 0
@@ -77,7 +77,7 @@ class Game(object):
         self.p2y = 0
 
         #Store the network channel of each client
-        self.player0 = player0
+        self.player0 = player
         self.player1 = None
 
         #Set the game id
