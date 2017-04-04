@@ -28,12 +28,34 @@ class OnlineGame(ConnectionListener):
         self.p1_rect = self.p1.get_rect()
         self.p2_rect = self.p2.get_rect()
         self.p2_rect.x = width - self.p2_rect.width
+        
+        #Initialize the gameID and player ID
+        self.gameID = None
+        self.player = None
 
         #Create the game clock
         self.clock = pygame.time.Clock()
+        
+        #Fill the screen with our background colour
+        self.screen.fill(self.bg)
 
         #Connect to the server
         self.Connect()
+        
+        #Set running to false
+        self.running = False
+        
+        #While the game isn't running pump the server
+        while not self.running:
+			#Check if the user exited the game
+			self.check_exit()
+			
+			self.Pump()
+			connection.Pump()
+			sleep(0.01)	
+
+        #Update the caption
+        pygame.display.set_caption("Game ID: {} - Player: {}".format(self.gameID, self.player))
 
     #Create the function to update the game
     def update(self):
@@ -43,10 +65,7 @@ class OnlineGame(ConnectionListener):
         self.Pump()
 
         #Check if the user exited
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                #exit()
+        self.check_exit()
 
         #Tick the game clock
         self.clock.tick(60)
@@ -63,7 +82,19 @@ class OnlineGame(ConnectionListener):
 
     #Create a function to receive the start game signal
     def Network_startgame(self, data):
-        print(data)
+		#Get the game ID and player number from the data
+		self.gameID = data['gameID']
+		self.player = data['player']
+		#Set the game to running so that we enter the update loop
+		self.running = True
+        
+    #Create a function that lets us check whether the user has clicked to exit (required to avoid crash)
+    def check_exit(self):
+		#Check if the user exited
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				#exit()
 
 #If the file was run and not imported
 if __name__ == "__main__":
