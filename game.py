@@ -23,11 +23,10 @@ class OnlineGame(ConnectionListener):
         self.bg = (200, 200, 200)
 
         #Create the players
-        self.p1 = pygame.image.load("player1.png")
-        self.p2 = pygame.image.load("player2.png")
-        self.p1_rect = self.p1.get_rect()
-        self.p2_rect = self.p2.get_rect()
-        self.p2_rect.x = width - self.p2_rect.width
+        self.players = []
+        self.players.append(Player(pygame.image.load("player1.png")))
+        self.players.append(Player(pygame.image.load("player2.png")))
+        self.players[1].rect.x = width - self.players[1].rect.width
         
         #Initialize the gameID and player ID
         self.gameID = None
@@ -61,7 +60,7 @@ class OnlineGame(ConnectionListener):
     def check_keys(self):
 		
 		#Get the keys that are being pressed
-		keys = pygamne.keys.get_pressed()
+		keys = pygame.key.get_pressed()
 		
 		#Check which keys were pressed
 		if keys[K_UP]:
@@ -97,8 +96,8 @@ class OnlineGame(ConnectionListener):
         self.screen.fill(self.bg)
 
         #Draw the players
-        self.screen.blit(self.p1, self.p1_rect)
-        self.screen.blit(self.p2, self.p2_rect)
+        for p in self.players:
+			self.screen.blit(p.img, p.rect)
 
         #Update the display
         pygame.display.flip()
@@ -123,13 +122,11 @@ class OnlineGame(ConnectionListener):
 class Player(object):
 	
 	#Constructor
-	def __init__(self, x, y, img, rect):
+	def __init__(self, img):
 		
 		#Set our object fields
-		self.x = x
-		self.y = y
 		self.img = img
-		self.rect = rect
+		self.rect = img.get_rect()
 
 #If the file was run and not imported
 if __name__ == "__main__":
