@@ -7,8 +7,8 @@ from time import sleep
 #A new channel is created every time a client connects
 class ClientChannel(Channel):
 
-    #Create a function that will respond to every request from the client
-    def Network(self, data):
+    #Create a function that will respond to a request to move a player
+    def Network_move(self, data):
 
         #Print the contents of the packet
         print(data)
@@ -29,6 +29,9 @@ class GameServer(Server):
         self.games = []
         self.queue = None
         self.gameIndex = 0
+        
+        #Set the velocity of our player
+        self.velocity = 5
 
     #Function to deal with new connections
     def Connected(self, channel, addr):
@@ -55,8 +58,8 @@ class GameServer(Server):
             self.queue.player1 = channel
 
             #Send a message to the clients that the game is starting
-            self.queue.player0.Send({"action":"startgame","player":0,"gameID":self.queue.gameID})
-            self.queue.player1.Send({"action":"startgame","player":1,"gameID":self.queue.gameID})
+            self.queue.player0.Send({"action":"startgame","player":0,"gameID":self.queue.gameID},"velocity":self.velocity)
+            self.queue.player1.Send({"action":"startgame","player":1,"gameID":self.queue.gameID},"velocity":self.velocity)
 
             #Add the game to the end of the game list
             self.games.append(self.queue)
