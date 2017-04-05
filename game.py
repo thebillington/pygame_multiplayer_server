@@ -49,6 +49,7 @@ class OnlineGame(ConnectionListener):
 			#Check if the user exited the game
 			self.check_exit()
 			
+			#Pump the server
 			self.Pump()
 			connection.Pump()
 			sleep(0.01)	
@@ -109,6 +110,16 @@ class OnlineGame(ConnectionListener):
 		self.player = data['player']
 		#Set the game to running so that we enter the update loop
 		self.running = True
+		
+	#Create a function to update a player based on a message from the server
+	def Network_position(self, data):
+		
+		#Get the player data from the request
+		p = data['player']
+		
+		#Update the player data
+		self.players[p].rect.x = data['x']
+		self.players[p].rect.y = data['y']
         
     #Create a function that lets us check whether the user has clicked to exit (required to avoid crash)
     def check_exit(self):
