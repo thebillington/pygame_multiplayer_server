@@ -86,6 +86,9 @@ class OnlineGame(ConnectionListener):
 
         #Check if the user exited
         self.check_exit()
+        
+        #Check if any keys were being pressed
+        self.check_keys()
 
         #Tick the game clock
         self.clock.tick(60)
@@ -115,6 +118,18 @@ class OnlineGame(ConnectionListener):
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				#exit()
+				
+#Create a class to hold our character information
+class Player(object):
+	
+	#Constructor
+	def __init__(self, x, y, img, rect):
+		
+		#Set our object fields
+		self.x = x
+		self.y = y
+		self.img = img
+		self.rect = rect
 
 #If the file was run and not imported
 if __name__ == "__main__":
