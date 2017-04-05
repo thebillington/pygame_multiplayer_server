@@ -58,8 +58,8 @@ class GameServer(Server):
             self.queue.player1 = channel
 
             #Send a message to the clients that the game is starting
-            self.queue.player0.Send({"action":"startgame","player":0,"gameID":self.queue.gameID},"velocity":self.velocity)
-            self.queue.player1.Send({"action":"startgame","player":1,"gameID":self.queue.gameID},"velocity":self.velocity)
+            self.queue.player0.Send({"action":"startgame","player":0,"gameID":self.queue.gameID,"velocity":self.velocity})
+            self.queue.player1.Send({"action":"startgame","player":1,"gameID":self.queue.gameID,"velocity":self.velocity})
 
             #Add the game to the end of the game list
             self.games.append(self.queue)

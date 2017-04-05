@@ -63,18 +63,18 @@ class OnlineGame(ConnectionListener):
 		#Get the keys that are being pressed
 		keys = pygame.key.get_pressed()
 		
-		#Check which keys were pressed
+		#Check which keys were pressed, update the position and notify the server of the update
 		if keys[K_UP]:
-			#Send the server an update
+			self.players[self.player].rect.y -= self.velocity
 			self.Send({"action":"move","key":"UP","player":self.player,"gameID":self.gameID})
 		if keys[K_DOWN]:
-			#Send the server an update
+			self.players[self.player].rect.y += self.velocity
 			self.Send({"action":"move","key":"DOWN","player":self.player,"gameID":self.gameID})
 		if keys[K_LEFT]:
-			#Send the server an update
+			self.players[self.player].rect.x -= self.velocity
 			self.Send({"action":"move","key":"LEFT","player":self.player,"gameID":self.gameID})
 		if keys[K_RIGHT]:
-			#Send the server an update
+			self.players[self.player].rect.x += self.velocity
 			self.Send({"action":"move","key":"RIGHT","player":self.player,"gameID":self.gameID})
 
     #Create the function to update the game
@@ -110,9 +110,11 @@ class OnlineGame(ConnectionListener):
 		self.player = data['player']
 		#Set the game to running so that we enter the update loop
 		self.running = True
+		#Set the velocity of our player
+		self.velocity = data['velocity']
 		
 	#Create a function to update a player based on a message from the server
-	def Network_position(self, data):
+    def Network_position(self, data):
 		
 		#Get the player data from the request
 		p = data['player']
