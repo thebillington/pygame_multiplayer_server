@@ -56,6 +56,26 @@ class OnlineGame(ConnectionListener):
 
         #Update the caption
         pygame.display.set_caption("Game ID: {} - Player: {}".format(self.gameID, self.player))
+        
+    #Create a function to tell the server what keys are being pressed
+    def check_keys(self):
+		
+		#Get the keys that are being pressed
+		keys = pygamne.keys.get_pressed()
+		
+		#Check which keys were pressed
+		if keys[K_UP]:
+			#Send the server an update
+			self.Send({"action":"move","key":"UP","player":self.player,"gameID":self.gameID})
+		if keys[K_DOWN]:
+			#Send the server an update
+			self.Send({"action":"move","key":"DOWN","player":self.player,"gameID":self.gameID})
+		if keys[K_LEFT]:
+			#Send the server an update
+			self.Send({"action":"move","key":"LEFT","player":self.player,"gameID":self.gameID})
+		if keys[K_RIGHT]:
+			#Send the server an update
+			self.Send({"action":"move","key":"RIGHT","player":self.player,"gameID":self.gameID})
 
     #Create the function to update the game
     def update(self):
