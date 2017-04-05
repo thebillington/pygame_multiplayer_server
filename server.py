@@ -10,8 +10,11 @@ class ClientChannel(Channel):
     #Create a function that will respond to a request to move a player
     def Network_move(self, data):
 
-        #Print the contents of the packet
-        print(data)
+        #Fetch the data top help us identify which game needs to update
+        gameID = data['gameID']
+        player = data['player']
+        x = data['x']
+        y = data['y']
 
 #Create a new server for our game
 class GameServer(Server):
