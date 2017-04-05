@@ -66,16 +66,16 @@ class OnlineGame(ConnectionListener):
 		#Check which keys were pressed, update the position and notify the server of the update
 		if keys[K_UP]:
 			self.players[self.player].rect.y -= self.velocity
-			self.Send({"action":"move","key":"UP","player":self.player,"gameID":self.gameID})
+			self.Send({"action":"move","x":0,"y":-self.velocity,"player":self.player,"gameID":self.gameID})
 		if keys[K_DOWN]:
 			self.players[self.player].rect.y += self.velocity
-			self.Send({"action":"move","key":"DOWN","player":self.player,"gameID":self.gameID})
+			self.Send({"action":"move","x":0,"y":self.velocity,"player":self.player,"gameID":self.gameID})
 		if keys[K_LEFT]:
 			self.players[self.player].rect.x -= self.velocity
-			self.Send({"action":"move","key":"LEFT","player":self.player,"gameID":self.gameID})
+			self.Send({"action":"move","x":-self.velocity,"y":0,"player":self.player,"gameID":self.gameID})
 		if keys[K_RIGHT]:
 			self.players[self.player].rect.x += self.velocity
-			self.Send({"action":"move","key":"RIGHT","player":self.player,"gameID":self.gameID})
+			self.Send({"action":"move","x":-self.velocity,"y":0,"player":self.player,"gameID":self.gameID})
 
     #Create the function to update the game
     def update(self):
