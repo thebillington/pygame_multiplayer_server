@@ -15,6 +15,9 @@ class ClientChannel(Channel):
         player = data['player']
         x = data['x']
         y = data['y']
+        
+        #Call the move function of the server to update this game
+        self._server.move_player(x, y, gameID, player)
 
 #Create a new server for our game
 class GameServer(Server):
@@ -45,10 +48,8 @@ class GameServer(Server):
         if self.queue == None:
 
             #If there isn't someone queueing
-            #Increment the game index
             #Set the game ID for the player channel
             #Add a new game to the queue
-            self.gameIndex += 1
             channel.gameID = self.gameIndex
             self.queue = Game(channel, self.gameIndex)
 
@@ -69,6 +70,27 @@ class GameServer(Server):
 
             #Empty the queue ready for the next connection
             self.queue = None
+            
+            #Increment the game index for the next game
+            self.gameIndex += 1
+            
+    #Create a function to move the players of a game
+    def move_player(self, x, y, gameID, player):
+		
+		#Get the game
+		g = self.games[gameID]
+		
+		#Update the correct player
+		g.players[player].move(x, y)
+		
+		#For all the other players send a message to update their position
+		for i in range(0, len(g.player_channels)):
+			
+			#If we aren't looking at the player that was updated
+			if not i == player:
+				
+				#Send a message to update
+				g.player_channels[i].Send({"action":"position","player":player,"x":g.players[player].x,"y":g.players[player].y})
 
 #Create the game class to hold information about any particular game
 class Game(object):
@@ -96,6 +118,13 @@ class Player(object):
 		#Set the x and y
 		self.x = x
 		self.y = y
+		
+	#Create a function to move this player
+	def move(self, x, y):
+		
+		#Update the variables
+		self.x += x
+		self.y += y
 
 #Start the server, but only if the file wasn't imported
 if __name__ == "__main__":

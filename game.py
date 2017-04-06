@@ -75,7 +75,7 @@ class OnlineGame(ConnectionListener):
 			self.Send({"action":"move","x":-self.velocity,"y":0,"player":self.player,"gameID":self.gameID})
 		if keys[K_RIGHT]:
 			self.players[self.player].rect.x += self.velocity
-			self.Send({"action":"move","x":-self.velocity,"y":0,"player":self.player,"gameID":self.gameID})
+			self.Send({"action":"move","x":self.velocity,"y":0,"player":self.player,"gameID":self.gameID})
 
     #Create the function to update the game
     def update(self):
@@ -102,6 +102,10 @@ class OnlineGame(ConnectionListener):
 
         #Update the display
         pygame.display.flip()
+        
+    #Create a function to print any data received over the network
+    def Network(self, data):
+		print(data)
 
     #Create a function to receive the start game signal
     def Network_startgame(self, data):
