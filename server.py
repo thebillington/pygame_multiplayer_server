@@ -58,11 +58,11 @@ class GameServer(Server):
             channel.gameID = self.gameIndex
 
             #Set the second player channel
-            self.queue.player1 = channel
+            self.queue.player_channels.append(channel)
 
             #Send a message to the clients that the game is starting
-            self.queue.player0.Send({"action":"startgame","player":0,"gameID":self.queue.gameID,"velocity":self.velocity})
-            self.queue.player1.Send({"action":"startgame","player":1,"gameID":self.queue.gameID,"velocity":self.velocity})
+            for i in range(0, len(self.queue.player_channels)):
+				self.queue.player_channels[i].Send({"action":"startgame","player":i,"gameID":self.queue.gameID,"velocity":self.velocity})
 
             #Add the game to the end of the game list
             self.games.append(self.queue)
@@ -76,18 +76,26 @@ class Game(object):
     #Constructor
     def __init__(self, player, gameIndex):
 
-        #Set the initial positions of each player
-        self.p1x = 0
-        self.p1y = 0
-        self.p2x = 550
-        self.p2y = 0
+        #Create a list of players
+        self.players = []
+        self.players.append(Player(0, 0))
+        self.players.append(Player(0, 550))
 
-        #Store the network channel of each client
-        self.player0 = player
-        self.player1 = None
+        #Store the network channel of the first client
+        self.player_channels = [player]
 
         #Set the game id
         self.gameID = gameIndex
+        
+#Create a player class to hold all of our information about a single player
+class Player(object):
+	
+	#Constructor
+	def __init__(self, x, y):
+		
+		#Set the x and y
+		self.x = x
+		self.y = y
 
 #Start the server, but only if the file wasn't imported
 if __name__ == "__main__":
