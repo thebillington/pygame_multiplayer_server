@@ -102,10 +102,6 @@ class OnlineGame(ConnectionListener):
 
         #Update the display
         pygame.display.flip()
-        
-    #Create a function to print any data received over the network
-    def Network(self, data):
-		print(data)
 
     #Create a function to receive the start game signal
     def Network_startgame(self, data):
