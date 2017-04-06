@@ -101,7 +101,7 @@ class Game(object):
         #Create a list of players
         self.players = []
         self.players.append(Player(0, 0))
-        self.players.append(Player(0, 550))
+        self.players.append(Player(550, 0))
 
         #Store the network channel of the first client
         self.player_channels = [player]
